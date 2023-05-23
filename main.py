@@ -1,9 +1,11 @@
 from fastapi import FastAPI
-from pydantic import BaseModel
+from functools import lru_cache
+
+from .students.storage import students, StudentCreateSchema, StudentUpdateSchema
 
 app = FastAPI()
 
-class StudentCreateSchema(BaseModel):
+"""class StudentCreateSchema(BaseModel):
     student_id: int
     first_name: str
     last_name: str
@@ -13,7 +15,10 @@ class StudentUpdateSchema(BaseModel):
     last_name: str
 
 students = []
-
+"""
+@lru_cache()
+def get_students():
+    return students
 @app.post("/students")
 async def createStudent(student: StudentCreateSchema):
     students.append(student)
